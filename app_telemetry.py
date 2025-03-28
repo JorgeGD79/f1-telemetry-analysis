@@ -15,8 +15,11 @@ import json
 from google.oauth2 import service_account
 from google.cloud import storage
 
-credentials_info = json.loads(st.secrets["GCS_CREDENTIALS_JSON"])
-credentials = service_account.Credentials.from_service_account_info(credentials_info)
+# Convertir string TOML en diccionario JSON
+gcs_credentials = json.loads(st.secrets["GCS_CREDENTIALS_JSON"])
+
+# Crear objeto de credenciales
+credentials = service_account.Credentials.from_service_account_info(gcs_credentials)
 client = storage.Client(credentials=credentials)
 
 st.set_page_config(layout="wide")
