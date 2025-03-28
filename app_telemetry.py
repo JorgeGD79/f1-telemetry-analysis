@@ -8,6 +8,9 @@ import streamlit as st
 from google.cloud import storage
 from io import StringIO
 
+import numpy as np
+from io import BytesIO
+
 
 import os
 
@@ -58,7 +61,15 @@ section_options = [
 
 section = st.sidebar.selectbox("📂 Select Section", section_options)
 
-
+def load_npy_from_gcs(bucket_name, blob_name):
+    try:
+        bucket = client.bucket(bucket_name)
+        blob = bucket.blob(blob_name)
+        content = blob.download_as_bytes()
+        return np.load(BytesIO(content), allow_pickle=True)
+    except Exception as e:
+        st.error(f"❌ Error loading {blob_name} from GCS: {e}")
+        return None
 
 
 @st.cache_data
@@ -214,9 +225,10 @@ if not df.empty:
             import matplotlib.pyplot as plt
 
             # Cargar datos
-            X = np.load("X_driving_model.npy")
-            y = np.load("y_driving_model.npy")
-            FEATURES = ['Speed', 'Throttle', 'Brake', 'RPM', 'nGear', 'DRS']
+            X = load_npy_from_gcs(GCS_BUCKET, "models/X_driving_model.npy")
+            y = load_npy_from_gcs(GCS_BUCKET, "models/y_driving_model.npy")
+
+            FEATURES = ['Speed', 'Throttle', 'Brake', 'RPM']
 
             # Clustering
             n_clusters = st.slider("Number of Clusters", min_value=2, max_value=10, value=4)
