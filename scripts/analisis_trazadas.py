@@ -2,7 +2,7 @@ import fastf1
 import matplotlib.pyplot as plt
 
 # Activar caché
-fastf1.Cache.enable_cache('data/')
+fastf1.Cache.enable_cache('../data/')
 
 # Cargar sesión de clasificación (o carrera)
 session = fastf1.get_session(2023, 'Monza', 'Q')

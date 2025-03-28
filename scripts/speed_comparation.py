@@ -1,5 +1,5 @@
 import fastf1
-fastf1.Cache.enable_cache('data/')  # Asegúrate de que esta ruta exista
+fastf1.Cache.enable_cache('../data/')  # Asegúrate de que esta ruta exista
 
 session = fastf1.get_session(2023, 'Monza', 'Q')  # Año, circuito, tipo sesión
 session.load()

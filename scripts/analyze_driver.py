@@ -5,8 +5,8 @@ from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 
 # Cargar datos
-X = np.load("X_driving_model.npy")
-y = np.load("y_driving_model.npy")
+X = np.load("../models/X_driving_model.npy")
+y = np.load("../models/y_driving_model.npy")
 FEATURES = ['Speed', 'Throttle', 'Brake', 'RPM', 'nGear', 'DRS']
 SAMPLES_PER_LAP = 100
 N_FEATURES = len(FEATURES)
