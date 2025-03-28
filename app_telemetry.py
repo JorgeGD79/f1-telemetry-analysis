@@ -638,7 +638,6 @@ if not df.empty:
 
             weather_df = load_data_from_gcs(GCS_BUCKET, weather_file)
             if not weather_df.empty:
-                weather_df = pd.read_csv(weather_file)
                 st.markdown("### 📈 Weather Evolution (per minute)")
                 selected_metric = st.selectbox("Select Weather Variable", weather_df.columns.drop('Time'), index=0)
                 if 'Time' in weather_df.columns and selected_metric:
