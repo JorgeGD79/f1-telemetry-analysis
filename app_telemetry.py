@@ -351,8 +351,8 @@ if not df.empty:
             import plotly.express as px
 
             # Cargar datos
-            X = np.load("X_driving_model.npy")
-            y = np.load("y_driving_model.npy")
+            X = load_npy_from_gcs(GCS_BUCKET, "models/X_driving_model.npy")
+            y = load_npy_from_gcs(GCS_BUCKET, "models/y_driving_model.npy")
 
             # Calcular promedio por piloto
             pilot_data = pd.DataFrame(X)
