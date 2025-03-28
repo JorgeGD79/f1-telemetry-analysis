@@ -25,6 +25,9 @@ gcs_credentials["private_key"] = gcs_credentials["private_key"].replace("\\n", "
 credentials = service_account.Credentials.from_service_account_info(gcs_credentials)
 client = storage.Client(credentials=credentials)
 
+bucket_name = st.secrets["GCS_BUCKET"]
+bucket = client.bucket(bucket_name)
+
 st.set_page_config(layout="wide")
 st.title("🏎️ F1 Telemetry Dashboard")
 
@@ -70,13 +73,17 @@ def load_data_from_gcs(bucket_name, gcs_path):
         st.error(f"❌ Error loading data from GCS: {e}")
         return pd.DataFrame()
 
+def list_files_in_gcs(prefix):
+    blobs = client.list_blobs(bucket_name, prefix=prefix)
+    return [blob.name for blob in blobs if blob.name.endswith("ALL.csv")]
 
 # Sidebar
 st.sidebar.title("📊 Configuration")
 season = st.sidebar.selectbox("Season", ["2023", "2024", "2025"])
 session_type = st.sidebar.selectbox("Session", ["R", "Q", "S"])
-gp_file = st.sidebar.selectbox("Grand Prix", sorted(
-    [f for f in os.listdir(f"data/season_{season}_{session_type}") if f.endswith("ALL.csv")]), index=0)
+gcs_prefix = f"data/season_{season}_{session_type}/"
+all_files = list_files_in_gcs(gcs_prefix)
+gp_file = st.sidebar.selectbox("Grand Prix", all_files, index=0)
 csv_path = f"data/season_{season}_{session_type}/{gp_file}"
 
 GCS_BUCKET = "f1-telemetry-data"  # Cambia esto por el nombre real del bucket
