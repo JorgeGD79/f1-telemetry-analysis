@@ -105,7 +105,3 @@ F1 Telemetry analysis and this website are unofficial and are not associated in 
 
 ```
 
-
-
-##  Notice
----
