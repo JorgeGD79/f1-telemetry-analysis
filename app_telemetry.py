@@ -41,8 +41,8 @@ section_options = [
     "🏠 Welcome",
     "-------------------------------",
     "🏁 Fast Lap Comparison",
-    "Throttle & Brake",
-    "NGear",
+    "⚙️ Throttle & Brake",
+    "🕹️ NGear",
     "📉 Consistency",
     "⏱️ Real Delta",
     "🏁 Race Mode",
@@ -173,7 +173,7 @@ if not df.empty:
         )
         st.plotly_chart(fig_trace, use_container_width=True)
 
-    if section == "Throttle & Brake":
+    if section == "⚙️ Throttle & Brake":
         st.subheader("Throttle Break Compare")
 
         lap1_data = df[(df['Driver'] == driver1) & (df['LapNumber'] == lap1)]
@@ -197,7 +197,7 @@ if not df.empty:
 
         st.plotly_chart(fig_brake, use_container_width=True)
 
-    if section == "NGear":
+    if section == "🕹️ NGear":
         st.subheader("Gear Compare")
 
         lap1_data = df[(df['Driver'] == driver1) & (df['LapNumber'] == lap1)]
