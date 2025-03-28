@@ -97,4 +97,15 @@ README.md
 
 ---
 
+## Notice
+
+F1 Telemetry analysis and this website are unofficial and are not associated in any way with the Formula 1 companies. F1, FORMULA ONE, FORMULA 1, FIA FORMULA ONE WORLD CHAMPIONSHIP, GRAND PRIX and related marks are trade marks of Formula One Licensing B.V.
+
 🔧 Built with passion for motorsport and data science.
+
+```
+
+
+
+##  Notice
+---
