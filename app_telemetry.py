@@ -64,7 +64,7 @@ section = st.sidebar.selectbox("📂 Select Section", section_options)
 @st.cache_data
 def load_data_from_gcs(bucket_name, gcs_path):
     try:
-        client = storage.Client()
+        client = storage.Client(credentials=credentials)
         bucket = client.bucket(bucket_name)
         blob = bucket.blob(gcs_path)
         content = blob.download_as_text()
@@ -74,8 +74,8 @@ def load_data_from_gcs(bucket_name, gcs_path):
         return pd.DataFrame()
 
 def list_files_in_gcs(prefix):
-    blobs = client.list_blobs(bucket_name, prefix=prefix)
-    return [blob.name for blob in blobs if blob.name.endswith("ALL.csv")]
+    blobs = client.list_blobs(bucket, prefix=prefix)
+    return [blob.name.replace(f"{prefix}", "") for blob in blobs if blob.name.endswith("ALL.csv")]
 
 # Sidebar
 st.sidebar.title("📊 Configuration")
@@ -596,10 +596,9 @@ if not df.empty:
             weather_file = f"data/season_{season}_{session_type}/{gp_name}_WEATHER.csv"
             summary_file = f"data/season_{season}_{session_type}/{gp_name}_WEATHER_SUMMARY.csv"
 
-            if 1 != 1:
-                st.warning(f"No weather summary found for {gp_name}")
-            else:
-                summary = load_data_from_gcs(GCS_BUCKET, summary_file)
+            summary = load_data_from_gcs(GCS_BUCKET, summary_file)
+
+            if not summary.empty:
                 st.markdown("### 📋 Weather Summary")
                 st.dataframe(summary.style.format("{:.2f}"))
 
@@ -625,7 +624,8 @@ if not df.empty:
                     )
                     st.plotly_chart(fig, use_container_width=True)
 
-            if os.path.exists(weather_file):
+            weather_df = load_data_from_gcs(GCS_BUCKET, weather_file)
+            if not weather_df.empty:
                 weather_df = pd.read_csv(weather_file)
                 st.markdown("### 📈 Weather Evolution (per minute)")
                 selected_metric = st.selectbox("Select Weather Variable", weather_df.columns.drop('Time'), index=0)
@@ -798,7 +798,8 @@ if not df.empty:
             selected_season = st.selectbox("Select Season", season_options, key="season_points_select")
 
             csv_path = f"data/overall/season_{selected_season}_R_positions_points.csv"
-            if not os.path.exists(csv_path):
+            df_positions = load_data_from_gcs(GCS_BUCKET, csv_path)
+            if df_positions.empty:
                 st.warning(f"No data found for season {selected_season}")
             else:
                 df_positions = pd.read_csv(csv_path)
