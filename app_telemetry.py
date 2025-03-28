@@ -11,7 +11,6 @@ from io import StringIO
 import numpy as np
 from io import BytesIO
 
-
 import os
 
 import json
@@ -61,6 +60,7 @@ section_options = [
 
 section = st.sidebar.selectbox("📂 Select Section", section_options)
 
+
 def load_npy_from_gcs(bucket_name, blob_name):
     try:
         bucket = client.bucket(bucket_name)
@@ -84,9 +84,11 @@ def load_data_from_gcs(bucket_name, gcs_path):
         st.error(f"❌ Error loading data from GCS: {e}")
         return pd.DataFrame()
 
+
 def list_files_in_gcs(prefix):
     blobs = client.list_blobs(bucket, prefix=prefix)
     return [blob.name.replace(f"{prefix}", "") for blob in blobs if blob.name.endswith("ALL.csv")]
+
 
 # Sidebar
 st.sidebar.title("📊 Configuration")
