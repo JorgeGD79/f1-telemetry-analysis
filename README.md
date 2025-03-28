@@ -1,98 +1,100 @@
+# 🏎️ F1 Telemetry Dashboard
 
-# 🏎️ F1 Telemetry Analysis
+Welcome to the **F1 Telemetry Dashboard**, a powerful interactive tool for analyzing Formula 1 racing data, built with **Streamlit**, **Plotly**, **Pandas**, **FastF1**, and **Scikit-Learn**.
 
-This personal project enables the analysis and comparison of Formula 1 telemetry data using the [FastF1](https://theoehrly.github.io/Fast-F1/) library, Python visualizations, and Power BI dashboards. It includes fastest lap comparisons, multi-lap analysis, stint breakdowns, and data exports for advanced visualization.
+## 🌐 Overview
 
----
+This dashboard allows you to explore, compare, and analyze F1 telemetry data across multiple seasons and sessions using visualizations and data science techniques.
+
+### 🔧 Features
+
+- 🏁 **Fast Lap Comparison**: Visual speed deltas between drivers
+- 🎛️ **Throttle & Brake Analysis**: Compare throttle and brake usage
+- ⚙️ **Gear Comparison**: Analyze gear shifting behavior
+- 🧠 **Driving Style Clustering**: Use ML to classify driving patterns
+- 📍 **Driver Positioning**: PCA projection of driving profiles
+- ⏱️ **Real Delta Timing**: Precise time gap over distance
+- 🏁 **Race Mode**: Animated path playback on the circuit
+- 📏 **Lap Time Evolution**: Monitor lap-by-lap performance
+- 📈 **Season Progress**: Track championship points and standings
+- 🌦️ **Weather Summary**: Integrated race weather data
+- 🔥 **Aggressiveness Score**: Metrics on risky driving behavior
+- 📉 **Consistency Analysis**: Technical metrics per lap
+
+## 🚀 Deployment Options
+
+### 📦 Docker
+
+You can run the dashboard locally via Docker:
+
+```bash
+docker build -t f1-telemetry .
+docker run -p 8501:8501 f1-telemetry
+```
+
+### ☁️ Streamlit Cloud
+
+Make sure to:
+- Add your `GCS_CREDENTIALS_JSON` and `GCS_BUCKET` to the `secrets` section
+- Set Python version and packages in `requirements.txt`
+
+## ☁️ Cloud Integration
+
+Data is loaded dynamically from **Google Cloud Storage (GCS)**.
+
+- Upload your telemetry `.csv` files and driving style model `.npy` files to GCS
+- File structure in GCS must match:
+```
+data/
+  season_2023_R/
+    01_Bahrain_ALL.csv
+    01_Bahrain_WEATHER.csv
+    01_Bahrain_WEATHER_SUMMARY.csv
+  overall/
+    season_2023_R_positions_points.csv
+models/
+  X_driving_model.npy
+  y_driving_model.npy
+```
+
+## 🔐 Secrets Configuration
+
+In `.streamlit/secrets.toml`:
+
+```toml
+GCS_BUCKET = "your-gcs-bucket-name"
+
+GCS_CREDENTIALS_JSON = """
+{
+  "type": "service_account",
+  ...
+  "private_key": "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n",
+  ...
+}
+"""
+```
 
 ## 📁 Project Structure
 
 ```
-f1-telemetry-analysis/
-├── data/           # Exported data (CSV for Power BI, FastF1 cache)
-├── notebooks/      # Exploratory analysis in Jupyter
-├── scripts/        # Reusable scripts and automation
-├── visuals/        # Plots generated with matplotlib
-├── powerbi/        # .pbix files and dashboard configs
-└── README.md       # This file
+app_telemetry.py           ← Main .py for streamlit
+📂 data/                   ← optional local data mirror
+📂 models/                 ← driving model folders
+📂 scripts/                ← scripts used with ploty to test data and code
+requirements.txt
+Dockerfile
+README.md
 ```
 
----
+## 📊 Technologies Used
 
-## ⚙️ Technologies
-
-- **FastF1** – Access to telemetry, laps, and session data.
-- **Python** – Data analysis and processing.
-- **Pandas / Matplotlib / Seaborn** – Visualization and data manipulation.
-- **Power BI** – Interactive dashboards and reporting.
-
----
-
-## 🚦 Project Features
-
-### ✅ Fastest Lap Analysis
-- Compare two drivers on their fastest lap.
-- Speed vs distance plots.
-- Variables like `Throttle`, `Brake`, `Gear`, `DRS`, and `RPM`.
-
-### ✅ Multi-Lap Analysis
-- Study multiple consecutive laps of a single driver.
-- Compare driving style evolution across laps.
-- Export data for Power BI.
-
-### ✅ Stint Analysis
-- Automatically group laps by stints (between pit stops).
-- Visualize pace and lap time evolution per stint.
-- Calculate average degradation per compound.
+- Streamlit
+- Google Cloud Storage
+- Plotly Express & Graph Objects
+- Pandas & NumPy
+- Scikit-Learn
+- Seaborn & Matplotlib
 
 ---
 
-## 📊 Exporting to Power BI
-
-Telemetry, fastest laps, and stint data can be exported as `.csv` files and loaded into Power BI for dynamic analysis.
-
-```python
-df.to_csv('data/file.csv', index=False)
-```
-
-Suggested Power BI visuals:
-- Lap time trend line.
-- Comparison by driver, compound, or stint.
-- Filters for session, driver, track, compound, etc.
-
----
-
-## 🧪 Scripts and Automation
-
-- `scripts/export_multilap.py`: Extracts multiple laps for analysis.
-- `scripts/analyze_stints.py`: Generates stint metrics.
-- `scripts/compare_fastest_laps.py`: Compares two drivers on fastest lap.
-
----
-
-## 🔧 Quick Setup
-
-```bash
-# Create virtual environment
-python -m venv .venv
-source .venv/bin/activate  # or .venv\Scripts\activate on Windows
-
-# Install dependencies
-pip install fastf1 pandas matplotlib seaborn jupyter openpyxl
-```
-
----
-
-## 🗂️ To Do / Future Improvements
-
-- Add racing line (X/Y track map) analysis.
-- Detect undercut/overcut strategies.
-- Automate full season data download.
-- Build interactive web dashboards with Dash or Streamlit.
-
----
-
-## 📬 Contact
-
-Personal project developed by Jorge Garcia.  
-Ideas, suggestions, or improvements are welcome!
+🔧 Built with passion for motorsport and data science.
