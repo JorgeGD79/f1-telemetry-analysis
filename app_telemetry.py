@@ -93,7 +93,7 @@ def list_files_in_gcs(prefix):
 # Sidebar
 st.sidebar.title("📊 Configuration")
 season = st.sidebar.selectbox("Season", ["2023", "2024", "2025"])
-session_type = st.sidebar.selectbox("Session", ["R", "Q", "S"])
+session_type = st.sidebar.selectbox("Session", ["FP2","R", "Q", "S"])
 gcs_prefix = f"data/season_{season}_{session_type}/"
 all_files = list_files_in_gcs(gcs_prefix)
 gp_file = st.sidebar.selectbox("Grand Prix", all_files, index=0)
