@@ -7,8 +7,8 @@ import os
 fastf1.Cache.enable_cache('../data/')
 
 # Parameters
-season = 2024
-session_type = 'Q'  # 'R' = Race, 'Q' = Quali, etc.
+season = 2025
+session_type = 'FP2'  # 'R' = Race, 'Q' = Quali, etc.
 base_dir = f"../data/season_{season}_{session_type}"
 os.makedirs(base_dir, exist_ok=True)
 
